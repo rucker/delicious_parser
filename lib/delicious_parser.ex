@@ -1,18 +1,11 @@
 defmodule DeliciousParser do
-  @moduledoc """
-  Documentation for `DeliciousParser`.
-  """
+  def open(file_name) do
+    File.read(file_name)
+  end
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> DeliciousParser.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def get_elements(file_name) do
+    File.open(file_name)
+    |> String.split
+    |> Enum.filter(fn line -> String.match?(line, ~r/<DT+/) end)
   end
 end
