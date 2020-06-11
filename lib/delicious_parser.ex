@@ -1,11 +1,7 @@
 defmodule DeliciousParser do
 
-  def open(file_name) do
-    File.read(file_name)
-  end
-
-  def filter_elements(file_name) do
-    File.open(file_name)
+  def filter_elements(document) do
+    document
     |> String.split("\n")
     |> Enum.filter(fn line -> String.match?(line, ~r/<D(T|D)+/) end)
   end
