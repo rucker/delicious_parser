@@ -27,4 +27,10 @@ defmodule DeliciousParserTest do
 		assert DeliciousParser.filter_elements("some_file") == [ ~s|<DT><A href="http://some-url.org"</A>|, ~s|<DD>Hey, a description!| ]
 	end
 
+  test "strips markup from lines, leaving only properties and values" do
+    input = [ "<DT><A href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\">Hey, a description!</A>" ]
+
+    assert DeliciousParser.strip_markup(input) == [ "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\"", "Hey, a description!" ]
+  end
+
 end
