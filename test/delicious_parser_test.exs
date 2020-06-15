@@ -22,9 +22,9 @@ defmodule DeliciousParserTest do
 	end
 
   test "strips markup from lines, leaving only properties and values" do
-    input = [ "<DT><A href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\">Hey, a description!</A>" ]
+    input = DeliciousParser.filter_elements(@document)
 
-    assert DeliciousParser.strip_markup(input) == [ "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\"", "Hey, a description!" ]
+    assert DeliciousParser.strip_markup(input) == [ "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\"", "Hey, a description!", "Some comments", "href=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\"", "About the turbo encabulator" ]
   end
 
 end

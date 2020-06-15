@@ -7,12 +7,26 @@ defmodule DeliciousParser do
   end
 
   def strip_markup(lines) do
-    Enum.map(lines, fn line -> String.replace(line, "<DT>", "")
+    Enum.map(lines, fn line ->
+      case String.starts_with?(line, "<DT>") do
+        true -> strip_link(line)
+        false -> strip_comment(line)
+      end
+    end)
+    |> List.flatten
+  end
+
+  defp strip_link(line) do
+    String.replace(line, "<DT>", "")
     |> String.replace("<A", "")
-    |> String.replace("</A>", "") end)
-    |> List.first
+    |> String.replace("</A>", "")
     |> String.trim
     |> String.split(">")
+  end
+
+  defp strip_comment(line) do
+    String.replace(line, "<DD>", "")
+  end
 
   end
 
