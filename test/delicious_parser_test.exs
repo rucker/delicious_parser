@@ -13,6 +13,7 @@ defmodule DeliciousParserTest do
   <DT><A href="http://some-url.org" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\">Hey, a description!</A>
   <DD>Some comments
   <DT><A href="http://another-url.org" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\">About the turbo encabulator</A>
+  </DL><p>
   """
 
   doctest DeliciousParser
@@ -25,6 +26,12 @@ defmodule DeliciousParserTest do
     input = DeliciousParser.filter_elements(@document)
 
     assert DeliciousParser.strip_markup(input) == [ "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\"", "Hey, a description!", "Some comments", "href=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\"", "About the turbo encabulator" ]
+  end
+
+  test "maps anchor tag properties" do
+    input = "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\""
+
+    assert DeliciousParser.map_anchor(input) == %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: "foo" }
   end
 
 end

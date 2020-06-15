@@ -28,6 +28,18 @@ defmodule DeliciousParser do
     String.replace(line, "<DD>", "")
   end
 
+  def map_anchor(anchor) do
+    String.split(anchor)
+    |> Enum.map_reduce(%{}, fn a, acc ->
+      { anchor, String.split(a, "=") |> map_href_props(acc) }
+    end)
+    |> elem(1)
+  end
+
+  defp map_href_props(props, map) do
+    Map.put_new(map,
+      List.first(props) |> String.downcase |> String.to_atom,
+      List.last(props) |> String.replace("\"", ""))
   end
 
 end
