@@ -31,9 +31,9 @@ defmodule DeliciousParserTest do
   end
 
   test "maps anchor tag properties" do
-    input = "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\""
+    input = "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo,bar\""
 
-    assert DeliciousParser.map_anchor(input) == %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: "foo" }
+    assert DeliciousParser.map_anchor(input) == %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: [ "foo","bar" ] }
   end
 
 end

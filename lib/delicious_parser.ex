@@ -33,11 +33,12 @@ defmodule DeliciousParser do
   end
 
   def map_anchor(anchor) do
-    String.split(anchor)
+    props = String.split(anchor)
     |> Enum.map_reduce(%{}, fn a, acc ->
       { anchor, String.split(a, "=") |> map_href_props(acc) }
     end)
     |> elem(1)
+    Map.put(props, :tags, Map.get(props, :tags) |> String.split(","))
   end
 
   defp map_href_props(props, map) do
