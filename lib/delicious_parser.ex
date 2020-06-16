@@ -14,6 +14,8 @@ defmodule DeliciousParser do
       end
     end)
     |> List.flatten
+    |> List.to_string
+    |> String.split(~r/ (?=href)/, trim: true)
   end
 
   defp strip_link(line) do
@@ -22,10 +24,12 @@ defmodule DeliciousParser do
     |> String.replace("</A>", "")
     |> String.trim
     |> String.split(">")
+    |> List.update_at(1, &(" TITLE=\"#{&1}\" "))
   end
 
   defp strip_comment(line) do
-    String.replace(line, "<DD>", "")
+    String.split(line, "<DD>")
+    |> List.update_at(1, &("COMMENTS=\"#{&1}\" "))
   end
 
   def map_anchor(anchor) do
