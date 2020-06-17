@@ -26,14 +26,12 @@ defmodule DeliciousParserTest do
     input = DeliciousParser.filter_elements(@document)
 
     assert DeliciousParser.strip_markup(input) == [ "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\" TITLE=\"Link title\" COMMENTS=\"Some comments\"", "href=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\" TITLE=\"About the turbo encabulator\" " ]
-    #TODO If last link has no comment, its TITLE will have an extra trailing space
-    # Look for / fix this in future tests
   end
 
-  test "maps anchor tag properties" do
-    input = "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo,bar\""
+  test "maps link properties" do
+    input = [ "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\" TITLE=\"Link title\" COMMENTS=\"Some comments\"", "href=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\" TITLE=\"About the turbo encabulator\" " ]
 
-    assert DeliciousParser.map_anchor(input) == %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: [ "foo","bar" ] }
+    assert DeliciousParser.map_links(input) == [ %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: [ "foo" ], comments: "Some comments", title: "Link title" }, %{ href: "http://another-url.org", add_date: "1486993837", private: "0", title: "About the turbo encabulator", tags: [ "bar", "baz" ] } ]
   end
 
 end
