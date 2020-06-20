@@ -34,4 +34,13 @@ defmodule DeliciousParserTest do
     assert DeliciousParser.map_links(input) == [ %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: [ "foo" ], comments: "Some comments", title: "Link title" }, %{ href: "http://another-url.org", add_date: "1486993837", private: "0", title: "About the turbo encabulator", tags: [ "bar", "baz" ] } ]
   end
 
+  test "encodes links to CSV" do
+    input = [ %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: [ "foo" ], comments: "Some comments", title: "Link title" }, %{ href: "http://another-url.org", add_date: "1486993837", private: "0", title: "About the turbo encabulator", tags: [ "bar", "baz" ] } ]
+
+    assert DeliciousParser.encode_csv(input) == [
+      "href,title,add_date,private,tags\r\n",
+      "http://some-url.org,Link title,1498938954,1,foo,Some comments\r\n",
+      "http://another-url.org,About the turbo encabulator,1486993837,0,barbaz,\r\n"
+    ]
+  end
 end

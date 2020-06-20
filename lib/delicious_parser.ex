@@ -1,4 +1,5 @@
 defmodule DeliciousParser do
+  import CSV
 
   def filter_elements(document) do
     document
@@ -50,5 +51,14 @@ defmodule DeliciousParser do
       List.first(props) |> String.downcase |> String.to_atom,
       List.last(props) |> String.replace("\"", "") |> String.trim)
   end
+
+  def encode_csv(bookmarks) do
+    header = [[ "href", "title", "add_date", "private", "tags" ]] |> encode |> Enum.to_list
+    contents = bookmarks |> Enum.map(fn b ->
+      [b[:href], b[:title], b[:add_date], b[:private], b[:tags], b[:comments]]
+    end)
+   [List.first(header) | contents |> encode |> Enum.to_list ]
+  end
+
 
 end
