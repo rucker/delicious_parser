@@ -14,8 +14,8 @@ defmodule DeliciousParser do
         false -> strip_comment(line)
       end
     end)
-    |> List.flatten
-    |> List.to_string
+    |> List.flatten()
+    |> List.to_string()
     |> String.split(~r/ (?=href)/, trim: true)
   end
 
@@ -23,14 +23,14 @@ defmodule DeliciousParser do
     String.replace(line, "<DT>", "")
     |> String.replace("<A", "")
     |> String.replace("</A>", "")
-    |> String.trim
+    |> String.trim()
     |> String.split(">")
-    |> List.update_at(1, &(" TITLE=\"#{&1}\" "))
+    |> List.update_at(1, &" TITLE=\"#{&1}\" ")
   end
 
   defp strip_comment(line) do
     String.split(line, "<DD>")
-    |> List.update_at(1, &("COMMENTS=\"#{&1}\" "))
+    |> List.update_at(1, &"COMMENTS=\"#{&1}\" ")
   end
 
   def map_links(props) do
@@ -38,27 +38,34 @@ defmodule DeliciousParser do
   end
 
   def map_link_props(link) do
-    props = String.split(link, ~r/(?<=" )/, trim: true)
-    |> Enum.map_reduce(%{}, fn a, acc ->
-      { link, String.split(a, "=") |> map_prop(acc) }
-    end)
-    |> elem(1)
-    Map.put(props, :tags, [ Map.get(props, :tags) ])
+    props =
+      String.split(link, ~r/(?<=" )/, trim: true)
+      |> Enum.map_reduce(%{}, fn a, acc ->
+        {link, String.split(a, "=") |> map_prop(acc)}
+      end)
+      |> elem(1)
+
+    Map.put(props, :tags, [Map.get(props, :tags)])
   end
 
   defp map_prop(props, map) do
-    Map.put_new(map,
-      List.first(props) |> String.downcase |> String.to_atom,
-      List.last(props) |> String.replace("\"", "") |> String.trim)
+    Map.put_new(
+      map,
+      List.first(props) |> String.downcase() |> String.to_atom(),
+      List.last(props) |> String.replace("\"", "") |> String.trim()
+    )
   end
 
   def encode_csv(bookmarks) do
-    header = [[ "href", "title", "add_date", "private", "comments", "tags" ]] |> encode |> Enum.to_list
-    contents = bookmarks |> Enum.map(fn b ->
-      [b[:href], b[:title], b[:add_date], b[:private], b[:comments], b[:tags]]
-    end)
-   [List.first(header) | contents |> encode |> Enum.to_list ]
+    header =
+      [["href", "title", "add_date", "private", "comments", "tags"]] |> encode |> Enum.to_list()
+
+    contents =
+      bookmarks
+      |> Enum.map(fn b ->
+        [b[:href], b[:title], b[:add_date], b[:private], b[:comments], b[:tags]]
+      end)
+
+    [List.first(header) | contents |> encode |> Enum.to_list()]
   end
-
-
 end
