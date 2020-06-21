@@ -53,16 +53,11 @@ defmodule DeliciousParser do
   end
 
   def encode_csv(bookmarks) do
-    header = [[ "href", "title", "add_date", "private", "tags", "comments" ]] |> encode |> Enum.to_list
+    header = [[ "href", "title", "add_date", "private", "tags" ]] |> encode |> Enum.to_list
     contents = bookmarks |> Enum.map(fn b ->
-      values = [b[:href], b[:title], b[:add_date], b[:private], b[:tags]]
-      if Map.has_key?(b, :comments) do
-        values ++ [b[:comments]]
-      else
-        values
-      end
+      [b[:href], b[:title], b[:add_date], b[:private], b[:tags], b[:comments]]
     end)
-    [ List.first(header) | contents |> encode |> Enum.to_list ]
+   [List.first(header) | contents |> encode |> Enum.to_list ]
   end
 
 
