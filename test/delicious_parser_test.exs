@@ -31,16 +31,16 @@ defmodule DeliciousParserTest do
   test "maps link properties" do
     input = [ "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\" TITLE=\"Link title\" COMMENTS=\"Some comments\"", "href=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\" TITLE=\"About the turbo encabulator\" " ]
 
-    assert DeliciousParser.map_links(input) == [ %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: [ "foo" ], comments: "Some comments", title: "Link title" }, %{ href: "http://another-url.org", add_date: "1486993837", private: "0", title: "About the turbo encabulator", tags: [ "bar", "baz" ] } ]
+    assert DeliciousParser.map_links(input) == [ %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: [ "foo" ], comments: "Some comments", title: "Link title" }, %{ href: "http://another-url.org", add_date: "1486993837", private: "0", title: "About the turbo encabulator", tags: [ "bar,baz" ] } ]
   end
 
   test "encodes links to CSV" do
-    input = [ %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: [ "foo" ], comments: "Some comments", title: "Link title" }, %{ href: "http://another-url.org", add_date: "1486993837", private: "0", title: "About the turbo encabulator", tags: [ "bar", "baz" ] } ]
+    input = [ %{ href: "http://some-url.org", add_date: "1498938954", private: "1", tags: [ "foo" ], comments: "Some comments", title: "Link title" }, %{ href: "http://another-url.org", add_date: "1486993837", private: "0", title: "About the turbo encabulator", tags: [ "bar,baz" ] } ]
 
     assert DeliciousParser.encode_csv(input) == [
       "href,title,add_date,private,comments,tags\r\n",
       "http://some-url.org,Link title,1498938954,1,Some comments,foo\r\n",
-      "http://another-url.org,About the turbo encabulator,1486993837,0,,barbaz\r\n"
+      "http://another-url.org,About the turbo encabulator,1486993837,0,,\"bar,baz\"\r\n"
     ]
   end
 end

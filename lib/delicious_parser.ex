@@ -43,7 +43,7 @@ defmodule DeliciousParser do
       { link, String.split(a, "=") |> map_prop(acc) }
     end)
     |> elem(1)
-    Map.put(props, :tags, Map.get(props, :tags) |> String.split(","))
+    Map.put(props, :tags, [ Map.get(props, :tags) ])
   end
 
   defp map_prop(props, map) do
