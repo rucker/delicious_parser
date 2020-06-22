@@ -38,7 +38,8 @@ defmodule DeliciousParserTest do
   test "maps link properties" do
     input = [
       "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\" TITLE=\"Link title\" COMMENTS=\"Some comments\"",
-      "href=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\" TITLE=\"About the turbo encabulator\" "
+      "href=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\" TITLE=\"About the turbo encabulator\" ",
+      "href=\"http://url-with-params.org/?p1=foo&p2=bar\" ADD_DATE=\"1486993841\" PRIVATE=\"0\" TAGS=\"qux\" TITLE=\"This is a tricksy link\" "
     ]
 
     assert DeliciousParser.map_links(input) == [
@@ -56,6 +57,13 @@ defmodule DeliciousParserTest do
                private: "0",
                title: "About the turbo encabulator",
                tags: ["bar,baz"]
+             },
+             %{
+               href: "http://url-with-params.org/?p1=foo&p2=bar",
+               add_date: "1486993841",
+               private: "0",
+               tags: ["qux"],
+               title: "This is a tricksy link"
              }
            ]
   end

@@ -33,15 +33,15 @@ defmodule DeliciousParser do
     |> List.update_at(1, &"COMMENTS=\"#{&1}\" ")
   end
 
-  def map_links(props) do
-    Enum.map(props, fn p -> map_link_props(p) end)
+  def map_links(links) do
+    Enum.map(links, fn link -> map_link_props(link) end)
   end
 
   def map_link_props(link) do
     props =
       String.split(link, ~r/(?<=" )/, trim: true)
       |> Enum.map_reduce(%{}, fn a, acc ->
-        {link, String.split(a, "=") |> map_prop(acc)}
+        {link, String.split(a, "=", parts: 2) |> map_prop(acc)}
       end)
       |> elem(1)
 
