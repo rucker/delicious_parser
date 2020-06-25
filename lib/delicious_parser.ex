@@ -39,7 +39,7 @@ defmodule DeliciousParser do
 
   def map_link_props(link) do
     props =
-      String.split(link, ~r/(?<=" )/, trim: true)
+      String.split(link, ~r/((?=\bHREF\b)|(?=\bADD_DATE\b)|(?=\bPRIVATE\b)|(?=\bTAGS\b)|(?=\bTITLE\b)|(?=\bCOMMENTS\b))/, trim: true)
       |> Enum.map_reduce(%{}, fn a, acc ->
         {link, String.split(a, "=", parts: 2) |> map_prop(acc)}
       end)

@@ -12,12 +12,12 @@ defmodule DeliciousParserTest do
   <DL><p>
   <DT><A HREF="http://some-url.org" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\">Link title</A>
   <DD>Some comments
-  <DT><A HREF="http://another-url.org" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\">About the "Turbo Encabulator"</A>
+  <DT><A HREF="http://another-url.org" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\">About the "Turbo Encabulator." What is this "thing" and why should I care?</A>
   </DL><p>
   """
 
   @link_with_comments "HREF=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\" TITLE=\"Link title\" COMMENTS=\"Some comments\""
-  @link_with_quotetitle "HREF=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\" TITLE=\"About the \"Turbo Encabulator\"\" "
+  @link_with_quotetitle "HREF=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\" TITLE=\"About the \"Turbo Encabulator.\" What is this \"thing\" and why should I care?\" "
   @link_with_urlparams "HREF=\"http://url-with-params.org/?p1=foo&p2=bar\" ADD_DATE=\"1486993841\" PRIVATE=\"0\" TAGS=\"qux\" TITLE=\"This is a tricksy link\" "
 
   @link_with_comments_map %{
@@ -32,7 +32,7 @@ defmodule DeliciousParserTest do
     href: "http://another-url.org",
     add_date: "1486993837",
     private: "0",
-    title: "About the 'Turbo Encabulator'",
+    title: "About the 'Turbo Encabulator.' What is this 'thing' and why should I care?",
     tags: ["bar,baz"]
   }
   @link_with_urlparams_map %{
@@ -48,7 +48,7 @@ defmodule DeliciousParserTest do
     assert DeliciousParser.filter_elements(@document) == [
              ~s|<DT><A HREF="http://some-url.org" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\">Link title</A>|,
              ~s|<DD>Some comments|,
-             ~s|<DT><A HREF="http://another-url.org" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\">About the \"Turbo Encabulator\"</A>|
+             ~s|<DT><A HREF="http://another-url.org" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\">About the \"Turbo Encabulator.\" What is this \"thing\" and why should I care?</A>|
            ]
   end
 
@@ -85,7 +85,7 @@ defmodule DeliciousParserTest do
     assert DeliciousParser.encode_csv(input) == [
              "href,title,add_date,private,comments,tags\r\n",
              "http://some-url.org,Link title,1498938954,1,Some comments,foo\r\n",
-             "http://another-url.org,About the 'Turbo Encabulator',1486993837,0,,\"bar,baz\"\r\n",
+             "http://another-url.org,About the 'Turbo Encabulator.' What is this 'thing' and why should I care?,1486993837,0,,\"bar,baz\"\r\n",
              "http://url-with-params.org/?p1=foo&p2=bar,This is a tricksy link,1486993841,0,,qux\r\n"
            ]
   end
