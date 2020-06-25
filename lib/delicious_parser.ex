@@ -48,12 +48,33 @@ defmodule DeliciousParser do
     Map.put(props, :tags, [Map.get(props, :tags)])
   end
 
-  defp map_prop(props, map) do
-    Map.put_new(
-      map,
-      List.first(props) |> String.downcase() |> String.to_atom(),
-      List.last(props) |> String.replace("\"", "") |> String.trim()
-    )
+  defp map_prop(prop, map) do
+    key =
+      List.first(prop)
+      |> String.downcase()
+      |> String.to_atom()
+
+    case key do
+      :title ->
+        Map.put_new(
+          map,
+          key,
+          List.last(prop)
+          |> String.trim()
+          |> String.replace("\"", "", global: false)
+          |> String.reverse()
+          |> String.replace("\"", "", global: false)
+          |> String.reverse()
+          |> String.replace("\"", "'")
+        )
+
+      _ ->
+        Map.put_new(
+          map,
+          List.first(prop) |> String.downcase() |> String.to_atom(),
+          List.last(prop) |> String.replace("\"", "") |> String.trim()
+        )
+    end
   end
 
   def encode_csv(bookmarks) do
