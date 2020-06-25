@@ -68,10 +68,17 @@ defmodule DeliciousParser do
           |> String.replace("\"", "'")
         )
 
+      :add_date ->
+        Map.put_new(
+          map,
+          key,
+          List.last(prop) |> String.replace("\"", "") |> String.trim() |> String.to_integer() |> DateTime.from_unix!(:second) |> DateTime.to_string()
+        )
+
       _ ->
         Map.put_new(
           map,
-          List.first(prop) |> String.downcase() |> String.to_atom(),
+          key,
           List.last(prop) |> String.replace("\"", "") |> String.trim()
         )
     end

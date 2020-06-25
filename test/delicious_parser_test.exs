@@ -22,7 +22,7 @@ defmodule DeliciousParserTest do
 
   @link_with_comments_map %{
     href: "http://some-url.org",
-    add_date: "1498938954",
+    add_date: "2017-07-01 19:55:54Z",
     private: "1",
     tags: ["foo"],
     comments: "Some comments",
@@ -30,14 +30,14 @@ defmodule DeliciousParserTest do
   }
   @link_with_quotetitle_map %{
     href: "http://another-url.org",
-    add_date: "1486993837",
+    add_date: "2017-02-13 13:50:37Z",
     private: "0",
     title: "About the 'Turbo Encabulator.' What is this 'thing' and why should I care?",
     tags: ["bar,baz"]
   }
   @link_with_urlparams_map %{
     href: "http://url-with-params.org/?p1=foo&p2=bar",
-    add_date: "1486993841",
+    add_date: "2017-02-13 13:50:41Z",
     private: "0",
     tags: ["qux"],
     title: "This is a tricksy link"
@@ -84,9 +84,9 @@ defmodule DeliciousParserTest do
 
     assert DeliciousParser.encode_csv(input) == [
              "href,title,add_date,private,comments,tags\r\n",
-             "http://some-url.org,Link title,1498938954,1,Some comments,foo\r\n",
-             "http://another-url.org,About the 'Turbo Encabulator.' What is this 'thing' and why should I care?,1486993837,0,,\"bar,baz\"\r\n",
-             "http://url-with-params.org/?p1=foo&p2=bar,This is a tricksy link,1486993841,0,,qux\r\n"
+             "http://some-url.org,Link title,2017-07-01 19:55:54Z,1,Some comments,foo\r\n",
+             "http://another-url.org,About the 'Turbo Encabulator.' What is this 'thing' and why should I care?,2017-02-13 13:50:37Z,0,,\"bar,baz\"\r\n",
+             "http://url-with-params.org/?p1=foo&p2=bar,This is a tricksy link,2017-02-13 13:50:41Z,0,,qux\r\n"
            ]
   end
 end
