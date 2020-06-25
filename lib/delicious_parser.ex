@@ -96,4 +96,21 @@ defmodule DeliciousParser do
 
     [List.first(header) | contents |> encode |> Enum.to_list()]
   end
+
+  def parse(filename) do
+    out_filename = String.replace(filename, "html", "csv")
+
+    if File.exists?(out_filename) do
+      File.rm(out_filename)
+    end
+
+    out_file = File.open!(out_filename, [:write, :append, :utf8])
+
+    File.read!(filename)
+    |> filter_elements
+    |> strip_markup
+    |> map_links
+    |> encode_csv
+    |> Enum.each(fn link -> IO.write(out_file, link) end)
+  end
 end
