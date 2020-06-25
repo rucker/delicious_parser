@@ -45,52 +45,55 @@ defmodule DeliciousParser do
         trim: true
       )
       |> Enum.map_reduce(%{}, fn a, acc ->
-        {link, String.split(a, "=", parts: 2) |> map_prop(acc)}
+        prop = String.split(a, "=", parts: 2)
+
+        {link,
+         map_prop(
+           acc,
+           List.first(prop)
+           |> String.downcase()
+           |> String.to_atom(),
+           List.last(prop)
+         )}
       end)
       |> elem(1)
 
     Map.put(props, :tags, [Map.get(props, :tags)])
   end
 
-  defp map_prop(prop, map) do
-    key =
-      List.first(prop)
-      |> String.downcase()
-      |> String.to_atom()
+  defp map_prop(map, key = :title, value) do
+    Map.put_new(
+      map,
+      key,
+      value
+      |> String.trim()
+      |> String.replace("\"", "", global: false)
+      |> String.reverse()
+      |> String.replace("\"", "", global: false)
+      |> String.reverse()
+      |> String.replace("\"", "'")
+    )
+  end
 
-    case key do
-      :title ->
-        Map.put_new(
-          map,
-          key,
-          List.last(prop)
-          |> String.trim()
-          |> String.replace("\"", "", global: false)
-          |> String.reverse()
-          |> String.replace("\"", "", global: false)
-          |> String.reverse()
-          |> String.replace("\"", "'")
-        )
+  defp map_prop(map, key = :add_date, value) do
+    Map.put_new(
+      map,
+      key,
+      value
+      |> String.replace("\"", "")
+      |> String.trim()
+      |> String.to_integer()
+      |> DateTime.from_unix!(:second)
+      |> DateTime.to_string()
+    )
+  end
 
-      :add_date ->
-        Map.put_new(
-          map,
-          key,
-          List.last(prop)
-          |> String.replace("\"", "")
-          |> String.trim()
-          |> String.to_integer()
-          |> DateTime.from_unix!(:second)
-          |> DateTime.to_string()
-        )
-
-      _ ->
-        Map.put_new(
-          map,
-          key,
-          List.last(prop) |> String.replace("\"", "") |> String.trim()
-        )
-    end
+  defp map_prop(map, key, value) do
+    Map.put_new(
+      map,
+      key,
+      value |> String.replace("\"", "") |> String.trim()
+    )
   end
 
   def encode_csv(bookmarks) do
