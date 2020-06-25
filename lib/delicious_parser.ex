@@ -39,7 +39,11 @@ defmodule DeliciousParser do
 
   def map_link_props(link) do
     props =
-      String.split(link, ~r/((?=\bHREF\b)|(?=\bADD_DATE\b)|(?=\bPRIVATE\b)|(?=\bTAGS\b)|(?=\bTITLE\b)|(?=\bCOMMENTS\b))/, trim: true)
+      String.split(
+        link,
+        ~r/((?=\bHREF\b)|(?=\bADD_DATE\b)|(?=\bPRIVATE\b)|(?=\bTAGS\b)|(?=\bTITLE\b)|(?=\bCOMMENTS\b))/,
+        trim: true
+      )
       |> Enum.map_reduce(%{}, fn a, acc ->
         {link, String.split(a, "=", parts: 2) |> map_prop(acc)}
       end)
@@ -72,7 +76,12 @@ defmodule DeliciousParser do
         Map.put_new(
           map,
           key,
-          List.last(prop) |> String.replace("\"", "") |> String.trim() |> String.to_integer() |> DateTime.from_unix!(:second) |> DateTime.to_string()
+          List.last(prop)
+          |> String.replace("\"", "")
+          |> String.trim()
+          |> String.to_integer()
+          |> DateTime.from_unix!(:second)
+          |> DateTime.to_string()
         )
 
       _ ->
