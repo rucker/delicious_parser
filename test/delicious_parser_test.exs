@@ -10,15 +10,15 @@ defmodule DeliciousParserTest do
   <TITLE>Bookmarks</TITLE>
   <H1>Bookmarks</H1>
   <DL><p>
-  <DT><A href="http://some-url.org" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\">Link title</A>
+  <DT><A HREF="http://some-url.org" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\">Link title</A>
   <DD>Some comments
-  <DT><A href="http://another-url.org" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\">About the "Turbo Encabulator"</A>
+  <DT><A HREF="http://another-url.org" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\">About the "Turbo Encabulator"</A>
   </DL><p>
   """
 
-  @link_with_comments "href=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\" TITLE=\"Link title\" COMMENTS=\"Some comments\""
-  @link_with_quotetitle "href=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\" TITLE=\"About the \"Turbo Encabulator\"\" "
-  @link_with_urlparams "href=\"http://url-with-params.org/?p1=foo&p2=bar\" ADD_DATE=\"1486993841\" PRIVATE=\"0\" TAGS=\"qux\" TITLE=\"This is a tricksy link\" "
+  @link_with_comments "HREF=\"http://some-url.org\" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\" TITLE=\"Link title\" COMMENTS=\"Some comments\""
+  @link_with_quotetitle "HREF=\"http://another-url.org\" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\" TITLE=\"About the \"Turbo Encabulator\"\" "
+  @link_with_urlparams "HREF=\"http://url-with-params.org/?p1=foo&p2=bar\" ADD_DATE=\"1486993841\" PRIVATE=\"0\" TAGS=\"qux\" TITLE=\"This is a tricksy link\" "
 
   @link_with_comments_map %{
     href: "http://some-url.org",
@@ -46,9 +46,9 @@ defmodule DeliciousParserTest do
 
   test "filters html elements matching <DT> or <DD>" do
     assert DeliciousParser.filter_elements(@document) == [
-             ~s|<DT><A href="http://some-url.org" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\">Link title</A>|,
+             ~s|<DT><A HREF="http://some-url.org" ADD_DATE=\"1498938954\" PRIVATE=\"1\" TAGS=\"foo\">Link title</A>|,
              ~s|<DD>Some comments|,
-             ~s|<DT><A href="http://another-url.org" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\">About the \"Turbo Encabulator\"</A>|
+             ~s|<DT><A HREF="http://another-url.org" ADD_DATE=\"1486993837\" PRIVATE=\"0\" TAGS=\"bar,baz\">About the \"Turbo Encabulator\"</A>|
            ]
   end
 

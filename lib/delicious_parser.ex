@@ -16,7 +16,7 @@ defmodule DeliciousParser do
     end)
     |> List.flatten()
     |> List.to_string()
-    |> String.split(~r/ (?=href)/, trim: true)
+    |> String.split(~r/ (?=HREF)/, trim: true)
   end
 
   defp strip_link(line) do
