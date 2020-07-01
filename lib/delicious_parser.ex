@@ -1,6 +1,15 @@
 defmodule DeliciousParser do
   import CSV
 
+  @moduledoc """
+  Parses a Netscape bookmarks HTML format delicious bookmarks file.
+
+  ## Examples
+    iex> DeliciousParser.parse("bookmarks.html")
+    :ok
+
+  """
+
   def filter_elements(document) do
     document
     |> String.split("\n")
