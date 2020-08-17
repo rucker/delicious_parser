@@ -2,10 +2,10 @@ defmodule DeliciousParser do
   import CSV
 
   @moduledoc """
-  Parses a Netscape bookmarks HTML format delicious bookmarks file.
+  Parses a (Netscape bookmarks HTML format) delicious bookmarks file.
 
   ## Examples
-    iex> DeliciousParser.parse("bookmarks.html")
+    iex> DeliciousParser.parse("delicious.html")
     :ok
 
   """

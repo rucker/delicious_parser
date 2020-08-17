@@ -42,7 +42,6 @@ defmodule DeliciousParserTest do
     tags: ["qux"],
     title: "This is a tricksy link"
   }
-  doctest DeliciousParser
 
   test "filters html elements matching <DT> or <DD>" do
     assert DeliciousParser.filter_elements(@document) == [
